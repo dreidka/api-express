@@ -1,5 +1,57 @@
 var Bicicleta = require('../../model/bicicleta.model')
+const mongoose = require('mongoose');
 
+describe('Bicicleta', function () {
+  beforeEach(function () {
+    var mongoDB = 'mongodb+srv://edwineladio73:EqsbZSDilDptMr6k@redbicicletas.w1bjjbt.mongodb.net/'
+    mongoose.connect(mongoDB);
+
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'Mongoose Error Connection: '));
+    db.once('open', function() {
+      console.log('mongodb connected successfully');
+      done();
+    })
+  })
+
+  afterEach(function(done) {
+    Bicicleta.deleteMany({}, function(err, success){
+      if(err) console.log(err);
+      done();
+    })
+  })
+
+  describe('Bicicleta.createInstance', () => {
+    it('Crea una instancia', () => {
+      var b1 = Bicicleta.createInstance(1,	'Rojo', 'Urbano',	[4.607466,-74.216151]);
+
+      expect(b1.code).toBe(1);
+      expect(b1.color).toBe('Rojo');
+      expect(b1.modelo).toBe('Urbano');
+      expect(b1.ubicacion[0]).toEqual(4.607466);
+      expect(b1.ubicacion[1]).toEqual(-74.216151);
+    })
+  })
+
+  describe('Bicicleta.allBicis', () => {
+    it('Comienza vacía', (done) => {
+      Bicicleta.allBicis(function(err, bicis){
+        expect(bicis.length).toBe(0);
+        done();
+      })
+    })
+  })
+
+  describe('Bicicleta.add', () => {
+    it('Agrega solo una bici', (done) => {
+      var aBici = new Bicicleta({code: 1, color: ''})
+    })
+  })
+
+
+})
+
+/*
 beforeEach(() => {
   Bicicleta.allBicis.length = [];
 })
@@ -37,3 +89,4 @@ describe('Bicicleta FindBy', () =>{
     expect(targetBici.modelo).toBe(b1.modelo);
   })
 })
+*/

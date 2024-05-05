@@ -2,34 +2,34 @@
 // 20221978016
 
 //Instancia del modelo Bicicleta
-const Bicicleta = require('../model/bicicleta.model')
+import BicicletaModel from '../model/bicicleta.model';
 
 
 //Crear una lista de todas las bicicletas
-exports.bicicleta_list = function (req, res) {
-  res.render('bicicletas/index', {bicis: Bicicleta.allBicis})
+export function bicicleta_list (req, res) {
+  res.render('bicicletas/index', {bicis: allBicis})
 }
 
-exports.bicicleta_create_get = function (req, res) {
+export function bicicleta_create_get (req, res) {
   res.render('bicicletas/create');
 }
 
-exports.bicicleta_create_post = function (req, res) {
+export function bicicleta_create_post (req, res) {
   let bici = new Bicicleta(req.body.id, req.body.color, req.body.modelo);
   bici.ubicacion = [req.body.lat, req.body.lng];
-  Bicicleta.add(bici)
+  add(bici)
 
   res.redirect('/bicicletas');
 }
 
-exports.bicicleta_update_get = function (req, res) {
-  let bici = Bicicleta.findById(req.params.id);
+export function bicicleta_update_get (req, res) {
+  let bici = findById(req.params.id);
 
   res.render('bicicletas/update', {bici});
 }
 
-exports.bicicleta_update_post = function (req, res) {
-  let bici = Bicicleta.findById(req.params.id);
+export function bicicleta_update_post (req, res) {
+  let bici = findById(req.params.id);
 
   bici.id = req.body.id
   bici.color = req.body.color
@@ -39,8 +39,8 @@ exports.bicicleta_update_post = function (req, res) {
   res.redirect('/bicicletas');
 }
 
-exports.bicicleta_delete_post = function(req, res) {
-  Bicicleta.removeById(req.body.id);
+export function bicicleta_delete_post(req, res) {
+  removeById(req.body.id);
 
   res.redirect('/bicicletas');
 }
