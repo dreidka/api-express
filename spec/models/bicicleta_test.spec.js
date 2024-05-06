@@ -44,7 +44,42 @@ describe('Bicicleta', function () {
 
   describe('Bicicleta.add', () => {
     it('Agrega solo una bici', (done) => {
-      var aBici = new Bicicleta({code: 1, color: ''})
+      var aBici = new Bicicleta({code: 1, color: 'verde',modelo:"urbana"});
+      Bicicleta.add(aBici, function(err,newBici){
+        if (err) console.log(err);
+        Bicicleta.allBicis(function(err, bicis){
+          expect(bicis.length).toEqual(1);
+          expect(bicis[0].code).toEqual(aBici.code);
+
+          done();
+        })
+
+      })
+    })
+  })
+
+  describe('Bicicleta.findByCode',() => {
+    it('debe devolver la bici con code 1', (done) =>{
+      Bicicleta.allBicis(function(err,bicis){
+        expect(bicis.length).toBe(0);
+
+        var aBici = new Bicicleta({code:1, color:'verde', modelo:'urbana'});
+        Bicicleta.add(aBici,function(error,newBici){
+          if(err) console.log(err);
+
+          var abici2 = new Bicicleta({code:2, color:'roja', modelo:'urbana'});
+          Bicicleta.add(abici2,function(err,newBici){
+            if(err) console.log(err);
+            Bicicleta.findByCode(1,function(err,targetBici){
+              expect(targetBici.code).toBe(aBici.code);
+              expect(targetBici.color).toBe(aBici.color);
+              expect(targetBici.modelo).toBe(aBici.modelo);
+
+              done();
+            })
+          })
+        })
+      })
     })
   })
 
